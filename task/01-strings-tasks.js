@@ -132,7 +132,6 @@ function repeatString(value, count) {
 function removeFirstOccurrences(str, value) {
     const startIndex = str.indexOf(value)
     if (startIndex > -1) {
-
         return str.slice(0, startIndex) + str.slice(startIndex + value.length, str.length)
     }
 
@@ -151,7 +150,7 @@ function removeFirstOccurrences(str, value) {
  *   '<a>' => 'a'
  */
 function unbracketTag(str) {
-    throw new Error('Not implemented');
+    return str.replace(/[<>]/g, '')
 }
 
 
