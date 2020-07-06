@@ -233,7 +233,19 @@ function getRectangleString(width, height) {
  *
  */
 function encodeToRot13(str) {
-    throw new Error('Not implemented');
+    const alph = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz', 
+    alphRot13 = 'NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm',
+    codeMap = {}
+
+    for (let index = 0; index < alph.length; index++) {
+        codeMap[alph[index]] = alphRot13[index]
+    }
+
+    return str.split('').map((letter, index) => {
+        return Object.keys(codeMap).includes(letter) 
+        ? codeMap[letter]
+        : letter
+    }).join('')
 }
 
 /**
@@ -250,7 +262,7 @@ function encodeToRot13(str) {
  *   isString(new String('test')) => true
  */
 function isString(value) {
-    throw new Error('Not implemented');
+    return typeof(value) === 'string' || value instanceof String
 }
 
 
@@ -279,7 +291,16 @@ function isString(value) {
  *   'K♠' => 51
  */
 function getCardId(value) {
-    throw new Error('Not implemented');
+const deck = [
+'A♣','2♣','3♣','4♣','5♣','6♣','7♣','8♣','9♣','10♣','J♣','Q♣','K♣',
+'A♦','2♦','3♦','4♦','5♦','6♦','7♦','8♦','9♦','10♦','J♦','Q♦','K♦',
+'A♥','2♥','3♥','4♥','5♥','6♥','7♥','8♥','9♥','10♥','J♥','Q♥','K♥',
+'A♠','2♠','3♠','4♠','5♠','6♠','7♠','8♠','9♠','10♠','J♠','Q♠','K♠'
+]
+const deckIndex = {}
+deck.map((card, index) => deckIndex[card] = index)
+
+return deckIndex[value]
 }
 
 
