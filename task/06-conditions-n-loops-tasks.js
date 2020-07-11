@@ -30,7 +30,9 @@
  *
  */
 function getFizzBuzz(num) {
-    throw new Error('Not implemented');
+    return num % 3 === 0 
+    ? num % 5 === 0 ? 'FizzBuzz' : 'Fizz'
+    : num % 5 === 0 ? 'Buzz' : num
 }
 
 
@@ -46,7 +48,13 @@ function getFizzBuzz(num) {
  *   10 => 3628800
  */
 function getFactorial(n) {
-    throw new Error('Not implemented');
+    let ans = 1
+
+    for (let i = 2; i <= n; i++) {
+        ans *= i
+    } 
+
+   return ans
 }
 
 
@@ -63,7 +71,7 @@ function getFactorial(n) {
  *   -1,1  =>  0  ( = -1 + 0 + 1 )
  */
 function getSumBetweenNumbers(n1, n2) {
-    throw new Error('Not implemented');
+    return (n1 + n2) * (n2 - n1 + 1) / 2 // the arithmetic progression sum formula
 }
 
 
@@ -82,7 +90,7 @@ function getSumBetweenNumbers(n1, n2) {
  *   10,10,10 =>  true
  */
 function isTriangle(a,b,c) {
-    throw new Error('Not implemented');
+    return a < b + c && b < a + c && c < b + a
 }
 
 
@@ -209,7 +217,7 @@ function getIntervalString(a, b, isStartIncluded, isEndIncluded) {
  * 'noon' => 'noon'
  */
 function reverseString(str) {
-    throw new Error('Not implemented');
+    return str.split('').reverse().join('')
 }
 
 
@@ -226,7 +234,7 @@ function reverseString(str) {
  *   34143 => 34143
  */
 function reverseInteger(num) {
-    throw new Error('Not implemented');
+    return parseInt(num.toString().split('').reverse().join(''))
 }
 
 
@@ -250,8 +258,17 @@ function reverseInteger(num) {
  *   5436468789016589 => false
  *   4916123456789012 => false
  */
-function isCreditCardNumber(ccn) {
-    throw new Error('Not implemented');
+function isCreditCardNumber(ccn) { // is ternary operator more readeble than standard if-else statements or not?
+    return ccn
+        .toString()
+        .split('')
+        .reverse()
+        .reduce((acc, cur, idx) => {
+            let digit = parseInt(cur)
+            return idx % 2 !== 0 
+            ? acc += digit * 2 > 9 ? digit * 2 - 9 : digit * 2 
+            : acc += digit
+        }, 0) % 10 === 0
 }
 
 
@@ -270,7 +287,12 @@ function isCreditCardNumber(ccn) {
  *   165536 (1+6+5+5+3+6 = 26,  2+6 = 8) => 8
  */
 function getDigitalRoot(num) {
-    throw new Error('Not implemented');
+    const sum = num
+        .toString()
+        .split('')
+        .reduce((acc, cur) => acc + parseInt(cur), 0)
+    
+    return sum > 9 ? getDigitalRoot(sum) : sum 
 }
 
 
