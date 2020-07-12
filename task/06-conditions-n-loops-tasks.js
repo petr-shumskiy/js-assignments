@@ -127,7 +127,13 @@ function isTriangle(a,b,c) {
  *  
  */
 function doRectanglesOverlap(rect1, rect2) {
-    throw new Error('Not implemented');
+    let [leftRect, rightRect] = rect1.left < rect2.left ? [rect1, rect2] : [rect2, rect1]
+    const overlapX = leftRect.left + leftRect.width >= rightRect.left
+    
+    let [topRect, botRect] = rect1.top < rect2.top ? [rect1, rect2] : [rect2, rect1]
+    const overlapY = topRect.top + topRect.height >= botRect.top
+
+    return overlapX && overlapY
 }
 
 
@@ -158,7 +164,7 @@ function doRectanglesOverlap(rect1, rect2) {
  *   
  */
 function isInsideCircle(circle, point) {
-    throw new Error('Not implemented');
+    return (point.x - circle.center.x)**2 + (point.y - circle.center.y)**2 < circle.radius**2
 }
 
 
