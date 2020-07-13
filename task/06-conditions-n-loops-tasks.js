@@ -180,7 +180,15 @@ function isInsideCircle(circle, point) {
  *   'entente' => null
  */
 function findFirstSingleChar(str) {
-    throw new Error('Not implemented');
+    const arr = str.split('')
+    
+    for (let letter of arr) {
+        if (arr.indexOf(letter) === arr.lastIndexOf(letter)) {
+            return letter
+        }
+    }
+
+    return null
 }
 
 
@@ -206,7 +214,12 @@ function findFirstSingleChar(str) {
  *
  */
 function getIntervalString(a, b, isStartIncluded, isEndIncluded) {
-    throw new Error('Not implemented');
+    return `\
+${isStartIncluded ? '[' : '('}\
+${Math.min(a, b)}, \
+${Math.max(a, b)}\
+${isEndIncluded ? ']' : ')'}`
+
 }
 
 
@@ -324,7 +337,23 @@ function getDigitalRoot(num) {
  *   '{[(<{[]}>)]}' = true 
  */
 function isBracketsBalanced(str) {
-    throw new Error('Not implemented');
+    const index = {
+        '[': ']',
+        '(': ')',
+        '{': '}',
+        '<': '>'
+    }
+
+    const que = []
+    for (let l of str) {
+       if (Object.keys(index).includes(l)) {
+           que.push(l)
+       } else if (l === index[que[que.length - 1]]) {
+           que.pop()
+       } else return false
+    }
+
+    return !str.length || !que.length 
 }
 
 
@@ -360,7 +389,31 @@ function isBracketsBalanced(str) {
  *
  */
 function timespanToHumanString(startDate, endDate) {
-    throw new Error('Not implemented');
+    
+    const brokenRound = num => num - Math.floor(num) <= 0.5 ? Math.floor(num) : Math.ceil(num)
+
+    const d = endDate - startDate
+    const ds = d / 1000
+    const dm = ds / 60
+    const dh = dm / 60
+    const dd = dh / 24
+    const dmo = dd / 30
+    const dy = dd / 365
+
+    if (ds <= 45) return 'a few seconds ago'
+    if (ds <= 90) return 'a minute ago'
+    if (dm <= 45) return `${brokenRound(dm)} minutes ago`
+    if (dm <= 90) return 'an hour ago'
+    if (dh <= 22) return `${brokenRound(dh)} hours ago`
+    if (dh <= 36) return 'a day ago'
+    if (dd <= 25) return `${brokenRound(dd)} days ago`
+    if (dd <= 45) return 'a month ago'
+    if (dd <= 345) return `${brokenRound(dmo)} months ago`
+    if (dd <= 545) return 'a year ago'
+
+    return `${brokenRound(dy)} years ago`
+
+
 }
 
 
@@ -384,7 +437,7 @@ function timespanToHumanString(startDate, endDate) {
  *    365, 10 => '365'
  */
 function toNaryString(num, n) {
-    throw new Error('Not implemented');
+    return num.toString(n)
 }
 
 
