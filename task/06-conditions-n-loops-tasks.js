@@ -452,31 +452,13 @@ function toNaryString(num, n) {
  *   ['/web/favicon.ico', '/web-scripts/dump', '/webalizer/logs'] => '/'
  */
 function getCommonDirectoryPath(pathes) { // TODO refactor to more readable
-    let commonPathArray = [] 
-    let shortestPathLen = pathes[0].split('/').length
+    const intersect = (arr1, arr2) => arr1.filter(value => arr2.includes(value))
 
-    const splittedPathes = pathes.map(path => {
-        let splittedPath = path.split('/')
-
-        if (splittedPath.length <= shortestPathLen) {
-            shortestPathLen = splittedPath.length
-        }
-
-        return splittedPath
-    })
-
-    for (let i = 0; i < shortestPathLen; i++) {
-        let isCommon = true
-        for (let j = 0; j < splittedPathes.length - 1; j++) {
-           if (splittedPathes[j][i] !== splittedPathes[j + 1][i]) {
-               isCommon = false
-               break
-           }
-        }
-        isCommon ? commonPathArray.push(splittedPathes[0][i]) : null
-    } 
-    
+    const commonPathArray = pathes.reduce((commonPath, currentPath) => {
+        return intersect(commonPath, currentPath.split('/'))
+    }, pathes[0].split('/'))
     commonPathArray.push('')
+
     return commonPathArray.join('/')
 }
 
