@@ -451,7 +451,7 @@ function toNaryString(num, n) {
  *   ['/web/assets/style.css', '/.bin/mocha',  '/read.me'] => '/'
  *   ['/web/favicon.ico', '/web-scripts/dump', '/webalizer/logs'] => '/'
  */
-function getCommonDirectoryPath(pathes) { // TODO refactor to more readable
+function getCommonDirectoryPath(pathes) {
     const intersect = (arr1, arr2) => arr1.filter(value => arr2.includes(value))
 
     const commonPathArray = pathes.reduce((commonPath, currentPath) => {
@@ -530,35 +530,35 @@ function getMatrixProduct(m1, m2) {
  *    [    ,   ,    ]]
  *
  */
-function evaluateTicTacToePosition(position) { // TODO refactor
-    for (let row of position) {
-        if (row.length === 3 && [...new Set(row)].length === 1) {
-            return row[0]
-        }
+function evaluateTicTacToePosition(position) {
+    const isFilled = arr => [...new Set(arr)].length === 1
+
+    for (let row of position) { // rows
+        if (row.length === 3 && isFilled(row)) return row[0]
     }
-    for (let col = 0; col < 3; col++) {
+
+    for (let col = 0; col < 3; col++) { // columns
         let arr = []
+
         for (let row = 0; row < 3; row++) {
             arr.push(position[row][col])
         }
-        if ([...new Set(arr)].length === 1) {
-            return arr[0]
-        }
+
+        if (isFilled(arr)) return arr[0]
     }
+
     let arr = []
-    for (let i = 0; i < position.length; i++) {
+    for (let i = 0; i < position.length; i++) { // first diagonal
        arr.push(position[i][i])
     }
-    if ([...new Set(arr)].length === 1) {
-            return arr[0]
-        }
+    if (isFilled(arr)) return arr[0]
+
     arr = []
-    for (let i = 2, j = 0; i >= 0 && j < 3; i--, j++) {
+    for (let i = 2, j = 0; i >= 0 && j < 3; i--, j++) { // second diagonal
         arr.push(position[i][j])
     }
-    if ([...new Set(arr)].length === 1) {
-            return arr[0]
-        }
+    if (isFilled(arr)) return arr[0] 
+
     return void(0)
 }
 
