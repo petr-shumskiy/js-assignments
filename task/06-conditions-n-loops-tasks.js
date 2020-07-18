@@ -214,6 +214,7 @@ function findFirstSingleChar(str) {
  *
  */
 function getIntervalString(a, b, isStartIncluded, isEndIncluded) {
+    
     return `\
 ${isStartIncluded ? '[' : '('}\
 ${Math.min(a, b)}, \
@@ -345,10 +346,10 @@ function isBracketsBalanced(str) {
     }
 
     const que = []
-    for (let l of str) {
-       if (Object.keys(index).includes(l)) {
-           que.push(l)
-       } else if (l === index[que[que.length - 1]]) {
+    for (let letter of str) {
+       if (Object.keys(index).includes(letter)) {
+           que.push(letter)
+       } else if (letter === index[que[que.length - 1]]) {
            que.pop()
        } else return false
     }
@@ -389,31 +390,28 @@ function isBracketsBalanced(str) {
  *
  */
 function timespanToHumanString(startDate, endDate) {
-    
     const brokenRound = num => num - Math.floor(num) <= 0.5 ? Math.floor(num) : Math.ceil(num)
 
-    const d = endDate - startDate
-    const ds = d / 1000
-    const dm = ds / 60
-    const dh = dm / 60
-    const dd = dh / 24
-    const dmo = dd / 30
-    const dy = dd / 365
+    const delta = endDate - startDate,
+        seconds = delta / 1000,
+        minutes = seconds / 60,
+        hours = minutes / 60,
+        days = hours / 24,
+        months = days / 30,
+        years = days / 365
 
-    if (ds <= 45) return 'a few seconds ago'
-    if (ds <= 90) return 'a minute ago'
-    if (dm <= 45) return `${brokenRound(dm)} minutes ago`
-    if (dm <= 90) return 'an hour ago'
-    if (dh <= 22) return `${brokenRound(dh)} hours ago`
-    if (dh <= 36) return 'a day ago'
-    if (dd <= 25) return `${brokenRound(dd)} days ago`
-    if (dd <= 45) return 'a month ago'
-    if (dd <= 345) return `${brokenRound(dmo)} months ago`
-    if (dd <= 545) return 'a year ago'
+    if (seconds <= 45) return 'a few seconds ago'
+    if (seconds <= 90) return 'a minute ago'
+    if (minutes <= 45) return `${brokenRound(minutes)} minutes ago`
+    if (minutes <= 90) return 'an hour ago'
+    if (hours <= 22) return `${brokenRound(hours)} hours ago`
+    if (hours <= 36) return 'a day ago'
+    if (days <= 25) return `${brokenRound(days)} days ago`
+    if (days <= 45) return 'a month ago'
+    if (days <= 345) return `${brokenRound(months)} months ago`
+    if (days <= 545) return 'a year ago'
 
-    return `${brokenRound(dy)} years ago`
-
-
+    return `${brokenRound(years)} years ago`
 }
 
 
@@ -454,30 +452,32 @@ function toNaryString(num, n) {
  *   ['/web/favicon.ico', '/web-scripts/dump', '/webalizer/logs'] => '/'
  */
 function getCommonDirectoryPath(pathes) { // TODO refactor to more readable
-    let cp = [] 
+    let commonPathArray = [] 
     let shortestPathLen = pathes[0].split('/').length
 
-    const splitPathes = pathes.map(path => {
-        let sp = path.split('/')
-        if (sp.length <= shortestPathLen) {
-            shortestPathLen = sp.length
+    const splittedPathes = pathes.map(path => {
+        let splittedPath = path.split('/')
+
+        if (splittedPath.length <= shortestPathLen) {
+            shortestPathLen = splittedPath.length
         }
-        return sp
+
+        return splittedPath
     })
 
     for (let i = 0; i < shortestPathLen; i++) {
         let isCommon = true
-        for (let j = 0; j < splitPathes.length - 1; j++) {
-           if (splitPathes[j][i] !== splitPathes[j + 1][i]) {
+        for (let j = 0; j < splittedPathes.length - 1; j++) {
+           if (splittedPathes[j][i] !== splittedPathes[j + 1][i]) {
                isCommon = false
                break
            }
         }
-        isCommon ? cp.push(splitPathes[0][i]) : null
+        isCommon ? commonPathArray.push(splittedPathes[0][i]) : null
     } 
     
-    cp.push('')
-    return cp.join('/')
+    commonPathArray.push('')
+    return commonPathArray.join('/')
 }
 
 
@@ -500,17 +500,21 @@ function getCommonDirectoryPath(pathes) { // TODO refactor to more readable
  *
  */
 function getMatrixProduct(m1, m2) {
-    const res = Array(m1.length).fill([...new Array(m2[0].length).fill(0)])
-    for (let i = 0; i < m1.length; i++) {
-       for (let j = 0; j < m2.length; j++) {
-           let value = 0
-           for (let k = 0; k < m1[0].length; k++) {
-              value += m1[i][k] * m2[k][j]
-           }
-           res[i][j] = value
-           //m1[i][j] * m2[j][i]
-       } 
+    const m1Rows = m1.length, m1Cols = m1[0].length,
+          m2Rows = m2.length, m2Cols = m2[0].length,
+          newMatrix = new Array(m1Rows)
+
+    for (let row = 0; row < m1Rows; row++) {
+        newMatrix[row] = new Array(m2Cols)
+        for (let col = 0; col < m2Cols; col++) {
+            newMatrix[row][col] = 0
+            for (let i = 0; i < m1Cols; i++) {
+                newMatrix[row][col] += m1[row][i] * m2[i][col]
+            }
+        }
     }
+
+    return newMatrix
 }
 
 
@@ -544,8 +548,36 @@ function getMatrixProduct(m1, m2) {
  *    [    ,   ,    ]]
  *
  */
-function evaluateTicTacToePosition(position) {
-    throw new Error('Not implemented');
+function evaluateTicTacToePosition(position) { // TODO refactor
+    for (let row of position) {
+        if (row.length === 3 && [...new Set(row)].length === 1) {
+            return row[0]
+        }
+    }
+    for (let col = 0; col < 3; col++) {
+        let arr = []
+        for (let row = 0; row < 3; row++) {
+            arr.push(position[row][col])
+        }
+        if ([...new Set(arr)].length === 1) {
+            return arr[0]
+        }
+    }
+    let arr = []
+    for (let i = 0; i < position.length; i++) {
+       arr.push(position[i][i])
+    }
+    if ([...new Set(arr)].length === 1) {
+            return arr[0]
+        }
+    arr = []
+    for (let i = 2, j = 0; i >= 0 && j < 3; i--, j++) {
+        arr.push(position[i][j])
+    }
+    if ([...new Set(arr)].length === 1) {
+            return arr[0]
+        }
+    return void(0)
 }
 
 
