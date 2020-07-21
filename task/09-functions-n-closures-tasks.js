@@ -26,7 +26,9 @@
  *
  */
 function getComposition(f,g) {
-    throw new Error('Not implemented');
+    return function(x) {
+        return f(g(x))
+    }
 }
 
 
@@ -47,7 +49,9 @@ function getComposition(f,g) {
  *
  */
 function getPowerFunction(exponent) {
-    throw new Error('Not implemented');
+    return function(number) {
+        return number**exponent
+    }
 }
 
 
@@ -65,7 +69,15 @@ function getPowerFunction(exponent) {
  *   getPolynom()      => null
  */
 function getPolynom() {
-    throw new Error('Not implemented');
+    const coeffs = [...arguments]
+
+    if (coeffs.length > 0) {
+        return function(x) {
+            return coeffs.reduce((acc, curr, idx) => acc + curr * x**(coeffs.length - 1 - idx), 0)
+        } 
+    }
+    
+    return null
 }
 
 
@@ -84,7 +96,11 @@ function getPolynom() {
  *   memoizer() => the same random number  (next run, returns the previous cached result)
  */
 function memoize(func) {
-    throw new Error('Not implemented');
+    const cached = func()
+
+    return function() {
+        return cached
+    }
 }
 
 
@@ -104,7 +120,19 @@ function memoize(func) {
  * retryer() => 2
  */
 function retry(func, attempts) {
-    throw new Error('Not implemented');
+    return function() {
+        for (let i = 0; i <= attempts; ++i) {
+            try {
+                return func()
+            } catch (err) {
+                if (attempts - i) {
+                    continue
+                } else { // all attempts ended
+                    throw err
+                }
+            }
+        }
+    }
 }
 
 
@@ -132,7 +160,15 @@ function retry(func, attempts) {
  *
  */
 function logger(func, logFunc) {
-    throw new Error('Not implemented');
+    return function(arg) {
+        const argsString = JSON.stringify(Array.from(arguments)).slice(1, -1)
+        
+        logFunc(`${func.name}(${argsString}) starts`)
+        let res = func(...arguments)
+        logFunc(`${func.name}(${argsString}) ends`)
+
+        return res
+    }
 }
 
 
