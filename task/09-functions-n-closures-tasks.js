@@ -186,7 +186,10 @@ function logger(func, logFunc) {
  *   partialUsingArguments(fn, 'a','b','c','d')() => 'abcd'
  */
 function partialUsingArguments(fn) {
-    throw new Error('Not implemented');
+  const closureArgs = [...arguments].slice(1)
+  return function() {
+   return fn(...closureArgs.concat([...arguments])) 
+  }
 }
 
 
@@ -207,7 +210,9 @@ function partialUsingArguments(fn) {
  *   getId10() => 11
  */
 function getIdGeneratorFunction(startFrom) {
-    throw new Error('Not implemented');
+  return function() {
+    return startFrom++
+  }
 }
 
 
