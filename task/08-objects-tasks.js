@@ -23,7 +23,11 @@
  *    console.log(r.getArea());   // => 200
  */
 function Rectangle(width, height) {
-    throw new Error('Not implemented');
+  this.width = width
+  this.height = height
+  this.__proto__.getArea = function() {
+    return this.width * this.height
+  }
 }
 
 
@@ -38,7 +42,7 @@ function Rectangle(width, height) {
  *    { width: 10, height : 20 } => '{"height":10,"width":20}'
  */
 function getJSON(obj) {
-    throw new Error('Not implemented');
+  return JSON.stringify(obj)
 }
 
 
@@ -54,7 +58,7 @@ function getJSON(obj) {
  *
  */
 function fromJSON(proto, json) {
-    throw new Error('Not implemented');
+  return Object.setPrototypeOf(JSON.parse(json), proto)
 }
 
 
@@ -83,7 +87,7 @@ function fromJSON(proto, json) {
  *
  * @example
  *
- *  var builder = cssSelectorBuilder;
+   *  var builder = cssSelectorBuilder;
  *
  *  builder.id('main').class('container').class('editable').stringify()  => '#main.container.editable'
  *
@@ -106,34 +110,131 @@ function fromJSON(proto, json) {
  *  For more examples see unit tests.
  */
 
+class buildHelper {
+
+}
+
+class Builder {
+  constructor() {
+    this.idUsed = false
+    this.elementUsed = false
+    this.pseudoElementUsed = false
+    this.order = []
+    this.result = '' 
+    this.duplicationError = new Error('Element, id and pseudo-element should not occur more then one time inside the selector" if element, id or pseudo-element occurs twice or more times')
+    this.orderError = new Error('Selector parts should be arranged in the following order: element, id, class, attribute, pseudo-class, pseudo-element')
+  }
+
+  element(value) {
+    if (this.elementUsed) {
+      throw this.duplicationError
+    }
+
+    this.elementUsed = true
+    this.order.push(0)
+    this.validateOrder()
+
+    this.result += (`${value}`)
+    return this
+  }
+
+  id(value) {
+    if (this.idUsed) {
+      throw this.duplicationError
+    }
+    this.idUsed = true
+    this.order.push(1)
+    this.validateOrder()
+
+    this.result += `#${value}`
+    return this
+  }
+
+  class(value) {
+    this.order.push(2)
+    this.validateOrder()
+
+    this.result += `.${value}`
+    return this
+  }
+  
+  attr(value) {
+    this.order.push(3)
+    this.validateOrder()
+
+    this.result += `[${value}]`
+    return this
+  }
+  
+  pseudoClass(value) {
+    this.order.push(4)
+    this.validateOrder()
+    
+    this.result += `:${value}`
+    return this
+  }
+  
+  pseudoElement(value) {
+    if (this.pseudoElementUsed) {
+      throw this.duplicationError
+    }
+    
+    this.pseudoElementUsed = true
+    this.order.push(5)
+    this.validateOrder()
+
+    this.result += `::${value}`
+    return this
+  }
+
+  stringify() {
+    return this.result
+  }
+
+  combine(selector1, combinator, selector2) {
+    this.result += `${selector1.result} ${combinator} ${selector2.result}`
+    return this
+  }
+
+  validateOrder() {
+    const sortedOrder = [...this.order].sort((a, b) => a - b)
+
+    for (let i = 0; i < this.order.length; i++) {
+      if (this.order[i] !== sortedOrder[i]) {
+        throw this.orderError
+      }
+    }
+  }
+}
+
 const cssSelectorBuilder = {
 
     element: function(value) {
-        throw new Error('Not implemented');
+      return new Builder().element(value)
     },
 
     id: function(value) {
-        throw new Error('Not implemented');
+      return new Builder().id(value)
     },
 
     class: function(value) {
-        throw new Error('Not implemented');
+      return new Builder().class(value)
     },
 
     attr: function(value) {
-        throw new Error('Not implemented');
+      return new Builder().attr(value)
     },
 
     pseudoClass: function(value) {
-        throw new Error('Not implemented');
+      return new Builder().pseudoClass(value)
     },
 
     pseudoElement: function(value) {
-        throw new Error('Not implemented');
+      return new Builder().pseudoElement(value)
     },
 
     combine: function(selector1, combinator, selector2) {
-        throw new Error('Not implemented');
+      return new Builder().combine(selector1, combinator, selector2)
     },
 };
 
