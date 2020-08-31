@@ -112,7 +112,9 @@ class Builder {
     this.idUsed = false
     this.elementUsed = false
     this.pseudoElementUsed = false
+
     this.order = []
+<<<<<<< HEAD
     this.result = ''
     this.duplicationError = new Error(
       'Element, id and pseudo-element should not occur more then one time inside the selector" if element, id or pseudo-element occurs twice or more times'
@@ -120,6 +122,12 @@ class Builder {
     this.orderError = new Error(
       'Selector parts should be arranged in the following order: element, id, class, attribute, pseudo-class, pseudo-element'
     )
+=======
+    this.result = '' 
+
+    this.duplicationError = new Error('Element, id and pseudo-element should not occur more then one time inside the selector" if element, id or pseudo-element occurs twice or more times')
+    this.orderError = new Error('Selector parts should be arranged in the following order: element, id, class, attribute, pseudo-class, pseudo-element')
+>>>>>>> 98a73fa448dca3521b81cff20b313c85f0faac9a
   }
 
   element(value) {
@@ -139,6 +147,7 @@ class Builder {
     if (this.idUsed) {
       throw this.duplicationError
     }
+    
     this.idUsed = true
     this.order.push(1)
     this.validateOrder()
