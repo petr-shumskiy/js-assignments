@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 
 /**************************************************************************************************
  *                                                                                                *
@@ -7,7 +7,6 @@
  * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object        *
  *                                                                                                *
  **************************************************************************************************/
-
 
 /**
  * Returns the rectagle object with width and height parameters and getArea() method
@@ -25,11 +24,11 @@
 function Rectangle(width, height) {
   this.width = width
   this.height = height
-  this.__proto__.getArea = function() {
-    return this.width * this.height
-  }
 }
 
+Rectangle.prototype.getArea = function () {
+  return this.width * this.height
+}
 
 /**
  * Returns the JSON representation of specified object
@@ -45,7 +44,6 @@ function getJSON(obj) {
   return JSON.stringify(obj)
 }
 
-
 /**
  * Returns the object of specified type from JSON representation
  *
@@ -60,7 +58,6 @@ function getJSON(obj) {
 function fromJSON(proto, json) {
   return Object.setPrototypeOf(JSON.parse(json), proto)
 }
-
 
 /**
  * Css selectors builder
@@ -87,7 +84,7 @@ function fromJSON(proto, json) {
  *
  * @example
  *
-   *  var builder = cssSelectorBuilder;
+ *  var builder = cssSelectorBuilder;
  *
  *  builder.id('main').class('container').class('editable').stringify()  => '#main.container.editable'
  *
@@ -110,19 +107,19 @@ function fromJSON(proto, json) {
  *  For more examples see unit tests.
  */
 
-class buildHelper {
-
-}
-
 class Builder {
   constructor() {
     this.idUsed = false
     this.elementUsed = false
     this.pseudoElementUsed = false
     this.order = []
-    this.result = '' 
-    this.duplicationError = new Error('Element, id and pseudo-element should not occur more then one time inside the selector" if element, id or pseudo-element occurs twice or more times')
-    this.orderError = new Error('Selector parts should be arranged in the following order: element, id, class, attribute, pseudo-class, pseudo-element')
+    this.result = ''
+    this.duplicationError = new Error(
+      'Element, id and pseudo-element should not occur more then one time inside the selector" if element, id or pseudo-element occurs twice or more times'
+    )
+    this.orderError = new Error(
+      'Selector parts should be arranged in the following order: element, id, class, attribute, pseudo-class, pseudo-element'
+    )
   }
 
   element(value) {
@@ -134,7 +131,7 @@ class Builder {
     this.order.push(0)
     this.validateOrder()
 
-    this.result += (`${value}`)
+    this.result += `${value}`
     return this
   }
 
@@ -157,7 +154,7 @@ class Builder {
     this.result += `.${value}`
     return this
   }
-  
+
   attr(value) {
     this.order.push(3)
     this.validateOrder()
@@ -165,20 +162,20 @@ class Builder {
     this.result += `[${value}]`
     return this
   }
-  
+
   pseudoClass(value) {
     this.order.push(4)
     this.validateOrder()
-    
+
     this.result += `:${value}`
     return this
   }
-  
+
   pseudoElement(value) {
     if (this.pseudoElementUsed) {
       throw this.duplicationError
     }
-    
+
     this.pseudoElementUsed = true
     this.order.push(5)
     this.validateOrder()
@@ -208,40 +205,38 @@ class Builder {
 }
 
 const cssSelectorBuilder = {
+  element: function (value) {
+    return new Builder().element(value)
+  },
 
-    element: function(value) {
-      return new Builder().element(value)
-    },
+  id: function (value) {
+    return new Builder().id(value)
+  },
 
-    id: function(value) {
-      return new Builder().id(value)
-    },
+  class: function (value) {
+    return new Builder().class(value)
+  },
 
-    class: function(value) {
-      return new Builder().class(value)
-    },
+  attr: function (value) {
+    return new Builder().attr(value)
+  },
 
-    attr: function(value) {
-      return new Builder().attr(value)
-    },
+  pseudoClass: function (value) {
+    return new Builder().pseudoClass(value)
+  },
 
-    pseudoClass: function(value) {
-      return new Builder().pseudoClass(value)
-    },
+  pseudoElement: function (value) {
+    return new Builder().pseudoElement(value)
+  },
 
-    pseudoElement: function(value) {
-      return new Builder().pseudoElement(value)
-    },
-
-    combine: function(selector1, combinator, selector2) {
-      return new Builder().combine(selector1, combinator, selector2)
-    },
-};
-
+  combine: function (selector1, combinator, selector2) {
+    return new Builder().combine(selector1, combinator, selector2)
+  },
+}
 
 module.exports = {
-    Rectangle: Rectangle,
-    getJSON: getJSON,
-    fromJSON: fromJSON,
-    cssSelectorBuilder: cssSelectorBuilder
-};
+  Rectangle: Rectangle,
+  getJSON: getJSON,
+  fromJSON: fromJSON,
+  cssSelectorBuilder: cssSelectorBuilder,
+}
