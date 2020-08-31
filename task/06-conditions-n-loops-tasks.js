@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 
 /**************************************************************************************************
  *                                                                                                *
@@ -7,7 +7,6 @@
  * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Loops_and_iteration              *
  *                                                                                                *
  **************************************************************************************************/
-
 
 /**
  * Returns the 'Fizz','Buzz' or an original number using the following rules:
@@ -30,11 +29,20 @@
  *
  */
 function getFizzBuzz(num) {
-    return num % 3 === 0 
-    ? num % 5 === 0 ? 'FizzBuzz' : 'Fizz'
-    : num % 5 === 0 ? 'Buzz' : num
-}
+  if (num % 3 === 0) {
+    if (num % 5 === 0) {
+      return 'FizzBuzz'
+    } else {
+      return 'Fizz'
+    }
+  } else {
+    if (num % 5 === 0) {
+      return 'Buzz'
+    }
+  }
 
+  return num
+}
 
 /**
  * Returns the factorial of the specified integer n.
@@ -48,15 +56,14 @@ function getFizzBuzz(num) {
  *   10 => 3628800
  */
 function getFactorial(n) {
-    let ans = 1
+  let ans = 1
 
-    for (let i = 2; i <= n; i++) {
-        ans *= i
-    } 
+  for (let i = 2; i <= n; i++) {
+    ans *= i
+  }
 
-   return ans
+  return ans
 }
-
 
 /**
  * Returns the sum of integer numbers between n1 and n2 (inclusive).
@@ -71,9 +78,8 @@ function getFactorial(n) {
  *   -1,1  =>  0  ( = -1 + 0 + 1 )
  */
 function getSumBetweenNumbers(n1, n2) {
-    return (n1 + n2) * (n2 - n1 + 1) / 2 // the arithmetic progression sum formula
+  return ((n1 + n2) * (n2 - n1 + 1)) / 2 // the arithmetic progression sum formula
 }
-
 
 /**
  * Returns true, if a triangle can be built with the specified sides a,b,c and false in any other ways.
@@ -89,31 +95,30 @@ function getSumBetweenNumbers(n1, n2) {
  *   10,1,1   =>  false
  *   10,10,10 =>  true
  */
-function isTriangle(a,b,c) {
-    return a < b + c && b < a + c && c < b + a
+function isTriangle(a, b, c) {
+  return a < b + c && b < a + c && c < b + a
 }
-
 
 /**
  * Returns true, if two specified axis-aligned rectangles overlap, otherwise false.
- * Each rectangle representing by object 
+ * Each rectangle representing by object
  *  {
  *     top: 5,
  *     left: 5,
  *     width: 20,
  *     height: 10
  *  }
- * 
+ *
  *  (5;5)
- *     -------------  
- *     |           | 
+ *     -------------
+ *     |           |
  *     |           |  height = 10
- *     ------------- 
- *        width=20    
- * 
+ *     -------------
+ *        width=20
+ *
  * NOTE: Please use canvas coordinate space (https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Drawing_shapes#The_grid),
  * it differs from Cartesian coordinate system.
- * 
+ *
  * @param {object} rect1
  * @param {object} rect2
  * @return {bool}
@@ -121,39 +126,38 @@ function isTriangle(a,b,c) {
  * @example:
  *   { top: 0, left: 0, width: 10, height: 10 },
  *   { top: 5, left: 5, width: 20, height: 20 }    =>  true
- * 
+ *
  *   { top: 0, left: 0, width: 10, height: 10 },
  *   { top:20, left:20, width: 20, height: 20 }    =>  false
- *  
+ *
  */
 function doRectanglesOverlap(rect1, rect2) {
-    let [leftRect, rightRect] = rect1.left < rect2.left ? [rect1, rect2] : [rect2, rect1]
-    const overlapX = leftRect.left + leftRect.width >= rightRect.left
-    
-    let [topRect, botRect] = rect1.top < rect2.top ? [rect1, rect2] : [rect2, rect1]
-    const overlapY = topRect.top + topRect.height >= botRect.top
+  let [leftRect, rightRect] = rect1.left < rect2.left ? [rect1, rect2] : [rect2, rect1]
+  const overlapX = leftRect.left + leftRect.width >= rightRect.left
 
-    return overlapX && overlapY
+  let [topRect, botRect] = rect1.top < rect2.top ? [rect1, rect2] : [rect2, rect1]
+  const overlapY = topRect.top + topRect.height >= botRect.top
+
+  return overlapX && overlapY
 }
-
 
 /**
  * Returns true, if point lies inside the circle, otherwise false.
- * Circle is an object of 
+ * Circle is an object of
  *  {
  *     center: {
- *       x: 5,       
+ *       x: 5,
  *       y: 5
- *     },        
+ *     },
  *     radius: 20
  *  }
- * 
- * Point is object of 
+ *
+ * Point is object of
  *  {
  *     x: 5,
  *     y: 5
  *  }
- * 
+ *
  * @param {object} circle
  * @param {object} point
  * @return {bool}
@@ -161,12 +165,11 @@ function doRectanglesOverlap(rect1, rect2) {
  * @example:
  *   { center: { x:0, y:0 }, radius:10 },  { x:0, y:0 }     => true
  *   { center: { x:0, y:0 }, radius:10 },  { x:10, y:10 }   => false
- *   
+ *
  */
 function isInsideCircle(circle, point) {
-    return (point.x - circle.center.x)**2 + (point.y - circle.center.y)**2 < circle.radius**2
+  return (point.x - circle.center.x) ** 2 + (point.y - circle.center.y) ** 2 < circle.radius ** 2
 }
-
 
 /**
  * Returns the first non repeated char in the specified strings otherwise returns null.
@@ -180,17 +183,16 @@ function isInsideCircle(circle, point) {
  *   'entente' => null
  */
 function findFirstSingleChar(str) {
-    const arr = str.split('')
-    
-    for (let letter of arr) {
-        if (arr.indexOf(letter) === arr.lastIndexOf(letter)) {
-            return letter
-        }
+  const arr = str.split('')
+
+  for (let letter of arr) {
+    if (arr.indexOf(letter) === arr.lastIndexOf(letter)) {
+      return letter
     }
+  }
 
-    return null
+  return null
 }
-
 
 /**
  * Returns the string representation of math interval, specified by two points and include / exclude flags.
@@ -214,15 +216,12 @@ function findFirstSingleChar(str) {
  *
  */
 function getIntervalString(a, b, isStartIncluded, isEndIncluded) {
-    
-    return `\
+  return `\
 ${isStartIncluded ? '[' : '('}\
 ${Math.min(a, b)}, \
 ${Math.max(a, b)}\
 ${isEndIncluded ? ']' : ')'}`
-
 }
-
 
 /**
  * Reverse the specified string (put all chars in reverse order)
@@ -237,9 +236,8 @@ ${isEndIncluded ? ']' : ')'}`
  * 'noon' => 'noon'
  */
 function reverseString(str) {
-    return str.split('').reverse().join('')
+  return str.split('').reverse().join('')
 }
-
 
 /**
  * Reverse the specified integer number (put all digits in reverse order)
@@ -254,9 +252,8 @@ function reverseString(str) {
  *   34143 => 34143
  */
 function reverseInteger(num) {
-    return parseInt(num.toString().split('').reverse().join(''))
+  return parseInt(num.toString().split('').reverse().join(''))
 }
-
 
 /**
  * Validates the CCN (credit card number) and return true if CCN is valid
@@ -278,19 +275,24 @@ function reverseInteger(num) {
  *   5436468789016589 => false
  *   4916123456789012 => false
  */
-function isCreditCardNumber(ccn) { // is ternary operator more readeble than standard if-else statements or not?
-    return ccn
-        .toString()
-        .split('')
-        .reverse()
-        .reduce((acc, cur, idx) => {
-            let digit = parseInt(cur)
-            return idx % 2 !== 0 
-            ? acc += digit * 2 > 9 ? digit * 2 - 9 : digit * 2 
-            : acc += digit
-        }, 0) % 10 === 0
-}
+function isCreditCardNumber(ccn) {
+  // is ternary operator more readeble than standard if-else statements or not?
+  return (
+    ccn
+      .toString()
+      .split('')
+      .reverse()
+      .reduce((acc, cur, idx) => {
+        let digit = parseInt(cur)
 
+        if (idx % 2 !== 0) {
+          return (acc += digit * 2 > 9 ? digit * 2 - 9 : digit * 2)
+        } else {
+          return (acc += digit)
+        }
+      }, 0) % 10 === 0
+  )
+}
 
 /**
  * Returns the digital root of integer:
@@ -307,14 +309,13 @@ function isCreditCardNumber(ccn) { // is ternary operator more readeble than sta
  *   165536 (1+6+5+5+3+6 = 26,  2+6 = 8) => 8
  */
 function getDigitalRoot(num) {
-    const sum = num
-        .toString()
-        .split('')
-        .reduce((acc, cur) => acc + parseInt(cur), 0)
-    
-    return sum > 9 ? getDigitalRoot(sum) : sum 
-}
+  const sum = num
+    .toString()
+    .split('')
+    .reduce((acc, cur) => acc + parseInt(cur), 0)
 
+  return sum > 9 ? getDigitalRoot(sum) : sum
+}
 
 /**
  * Returns true if the specified string has the balanced brackets and false otherwise.
@@ -335,28 +336,27 @@ function getDigitalRoot(num) {
  *   '[[][][[]]]' => true
  *   '[[][]][' => false
  *   '{)' = false
- *   '{[(<{[]}>)]}' = true 
+ *   '{[(<{[]}>)]}' = true
  */
 function isBracketsBalanced(str) {
-    const index = {
-        '[': ']',
-        '(': ')',
-        '{': '}',
-        '<': '>'
-    }
+  const index = {
+    '[': ']',
+    '(': ')',
+    '{': '}',
+    '<': '>',
+  }
 
-    const que = []
-    for (let letter of str) {
-       if (Object.keys(index).includes(letter)) {
-           que.push(letter)
-       } else if (letter === index[que[que.length - 1]]) {
-           que.pop()
-       } else return false
-    }
+  const que = []
+  for (let letter of str) {
+    if (Object.keys(index).includes(letter)) {
+      que.push(letter)
+    } else if (letter === index[que[que.length - 1]]) {
+      que.pop()
+    } else return false
+  }
 
-    return !str.length || !que.length 
+  return !str.length || !que.length
 }
-
 
 /**
  * Returns the human readable string of time period specified by the start and end time.
@@ -390,30 +390,29 @@ function isBracketsBalanced(str) {
  *
  */
 function timespanToHumanString(startDate, endDate) {
-    const brokenRound = num => num - Math.floor(num) <= 0.5 ? Math.floor(num) : Math.ceil(num)
+  const brokenRound = (num) => (num - Math.floor(num) <= 0.5 ? Math.floor(num) : Math.ceil(num))
 
-    const delta = endDate - startDate,
-        seconds = delta / 1000,
-        minutes = seconds / 60,
-        hours = minutes / 60,
-        days = hours / 24,
-        months = days / 30,
-        years = days / 365
+  const delta = endDate - startDate,
+    seconds = delta / 1000,
+    minutes = seconds / 60,
+    hours = minutes / 60,
+    days = hours / 24,
+    months = days / 30,
+    years = days / 365
 
-    if (seconds <= 45) return 'a few seconds ago'
-    if (seconds <= 90) return 'a minute ago'
-    if (minutes <= 45) return `${brokenRound(minutes)} minutes ago`
-    if (minutes <= 90) return 'an hour ago'
-    if (hours <= 22) return `${brokenRound(hours)} hours ago`
-    if (hours <= 36) return 'a day ago'
-    if (days <= 25) return `${brokenRound(days)} days ago`
-    if (days <= 45) return 'a month ago'
-    if (days <= 345) return `${brokenRound(months)} months ago`
-    if (days <= 545) return 'a year ago'
+  if (seconds <= 45) return 'a few seconds ago'
+  if (seconds <= 90) return 'a minute ago'
+  if (minutes <= 45) return `${brokenRound(minutes)} minutes ago`
+  if (minutes <= 90) return 'an hour ago'
+  if (hours <= 22) return `${brokenRound(hours)} hours ago`
+  if (hours <= 36) return 'a day ago'
+  if (days <= 25) return `${brokenRound(days)} days ago`
+  if (days <= 45) return 'a month ago'
+  if (days <= 345) return `${brokenRound(months)} months ago`
+  if (days <= 545) return 'a year ago'
 
-    return `${brokenRound(years)} years ago`
+  return `${brokenRound(years)} years ago`
 }
-
 
 /**
  * Returns the string with n-ary (binary, ternary, etc, where n<=10) representation of specified number.
@@ -435,9 +434,8 @@ function timespanToHumanString(startDate, endDate) {
  *    365, 10 => '365'
  */
 function toNaryString(num, n) {
-    return num.toString(n)
+  return num.toString(n)
 }
-
 
 /**
  * Returns the commom directory path for specified array of full filenames.
@@ -452,16 +450,15 @@ function toNaryString(num, n) {
  *   ['/web/favicon.ico', '/web-scripts/dump', '/webalizer/logs'] => '/'
  */
 function getCommonDirectoryPath(pathes) {
-    const intersect = (arr1, arr2) => arr1.filter(value => arr2.includes(value))
+  const intersect = (arr1, arr2) => arr1.filter((value) => arr2.includes(value))
 
-    const commonPathArray = pathes.reduce((commonPath, currentPath) => {
-        return intersect(commonPath, currentPath.split('/'))
-    }, pathes[0].split('/'))
-    commonPathArray.push('')
+  const commonPathArray = pathes.reduce((commonPath, currentPath) => {
+    return intersect(commonPath, currentPath.split('/'))
+  }, pathes[0].split('/'))
+  commonPathArray.push('')
 
-    return commonPathArray.join('/')
+  return commonPathArray.join('/')
 }
-
 
 /**
  * Returns the product of two specified matrixes.
@@ -482,23 +479,24 @@ function getCommonDirectoryPath(pathes) {
  *
  */
 function getMatrixProduct(m1, m2) {
-    const m1Rows = m1.length, m1Cols = m1[0].length,
-          m2Rows = m2.length, m2Cols = m2[0].length,
-          newMatrix = new Array(m1Rows)
+  const m1Rows = m1.length,
+    m1Cols = m1[0].length,
+    m2Rows = m2.length,
+    m2Cols = m2[0].length,
+    newMatrix = new Array(m1Rows)
 
-    for (let row = 0; row < m1Rows; row++) {
-        newMatrix[row] = new Array(m2Cols)
-        for (let col = 0; col < m2Cols; col++) {
-            newMatrix[row][col] = 0
-            for (let i = 0; i < m1Cols; i++) {
-                newMatrix[row][col] += m1[row][i] * m2[i][col]
-            }
-        }
+  for (let row = 0; row < m1Rows; row++) {
+    newMatrix[row] = new Array(m2Cols)
+    for (let col = 0; col < m2Cols; col++) {
+      newMatrix[row][col] = 0
+      for (let i = 0; i < m1Cols; i++) {
+        newMatrix[row][col] += m1[row][i] * m2[i][col]
+      }
     }
+  }
 
-    return newMatrix
+  return newMatrix
 }
-
 
 /**
  * Returns the evaluation of the specified tic-tac-toe position.
@@ -531,55 +529,58 @@ function getMatrixProduct(m1, m2) {
  *
  */
 function evaluateTicTacToePosition(position) {
-    const isFilled = arr => [...new Set(arr)].length === 1
+  const isFilled = (arr) => [...new Set(arr)].length === 1
 
-    for (let row of position) { // rows
-        if (row.length === 3 && isFilled(row)) return row[0]
-    }
+  for (let row of position) {
+    // rows
+    if (row.length === 3 && isFilled(row)) return row[0]
+  }
 
-    for (let col = 0; col < 3; col++) { // columns
-        let arr = []
-
-        for (let row = 0; row < 3; row++) {
-            arr.push(position[row][col])
-        }
-
-        if (isFilled(arr)) return arr[0]
-    }
-
+  for (let col = 0; col < 3; col++) {
+    // columns
     let arr = []
-    for (let i = 0; i < position.length; i++) { // first diagonal
-       arr.push(position[i][i])
+
+    for (let row = 0; row < 3; row++) {
+      arr.push(position[row][col])
     }
+
     if (isFilled(arr)) return arr[0]
+  }
 
-    arr = []
-    for (let i = 2, j = 0; i >= 0 && j < 3; i--, j++) { // second diagonal
-        arr.push(position[i][j])
-    }
-    if (isFilled(arr)) return arr[0] 
+  let arr = []
+  for (let i = 0; i < position.length; i++) {
+    // first diagonal
+    arr.push(position[i][i])
+  }
+  if (isFilled(arr)) return arr[0]
 
-    return void(0)
+  arr = []
+  for (let i = 2, j = 0; i >= 0 && j < 3; i--, j++) {
+    // second diagonal
+    arr.push(position[i][j])
+  }
+  if (isFilled(arr)) return arr[0]
+
+  return void 0
 }
 
-
 module.exports = {
-    getFizzBuzz: getFizzBuzz,
-    getFactorial: getFactorial,
-    getSumBetweenNumbers: getSumBetweenNumbers,
-    isTriangle: isTriangle,
-    doRectanglesOverlap: doRectanglesOverlap,
-    isInsideCircle: isInsideCircle,
-    findFirstSingleChar: findFirstSingleChar,
-    getIntervalString : getIntervalString,
-    reverseString: reverseString,
-    reverseInteger: reverseInteger,
-    isCreditCardNumber: isCreditCardNumber,
-    getDigitalRoot: getDigitalRoot,
-    isBracketsBalanced: isBracketsBalanced,
-    timespanToHumanString : timespanToHumanString,
-    toNaryString: toNaryString,
-    getCommonDirectoryPath: getCommonDirectoryPath,
-    getMatrixProduct: getMatrixProduct,
-    evaluateTicTacToePosition : evaluateTicTacToePosition
-};
+  getFizzBuzz: getFizzBuzz,
+  getFactorial: getFactorial,
+  getSumBetweenNumbers: getSumBetweenNumbers,
+  isTriangle: isTriangle,
+  doRectanglesOverlap: doRectanglesOverlap,
+  isInsideCircle: isInsideCircle,
+  findFirstSingleChar: findFirstSingleChar,
+  getIntervalString: getIntervalString,
+  reverseString: reverseString,
+  reverseInteger: reverseInteger,
+  isCreditCardNumber: isCreditCardNumber,
+  getDigitalRoot: getDigitalRoot,
+  isBracketsBalanced: isBracketsBalanced,
+  timespanToHumanString: timespanToHumanString,
+  toNaryString: toNaryString,
+  getCommonDirectoryPath: getCommonDirectoryPath,
+  getMatrixProduct: getMatrixProduct,
+  evaluateTicTacToePosition: evaluateTicTacToePosition,
+}
