@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 
 /**********************************************************************************************
  *                                                                                            *
@@ -9,7 +9,6 @@
  * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Closures                           *
  *                                                                                            *
  **********************************************************************************************/
-
 
 /**
  * Returns the functions composition of two specified functions f(x) and g(x).
@@ -25,12 +24,11 @@
  *   getComposition(Math.sin, Math.asin)(x) => Math.sin(Math.acos(x))
  *
  */
-function getComposition(f,g) {
-    return function(x) {
-        return f(g(x))
-    }
+function getComposition(f, g) {
+  return function (x) {
+    return f( g(x) )
+  }
 }
-
 
 /**
  * Returns the math power function with the specified exponent
@@ -49,11 +47,10 @@ function getComposition(f,g) {
  *
  */
 function getPowerFunction(exponent) {
-    return function(number) {
-        return number**exponent
-    }
+  return function (number) {
+    return number ** exponent
+  }
 }
-
 
 /**
  * Returns the polynom function of one argument based on specified coefficients.
@@ -69,17 +66,16 @@ function getPowerFunction(exponent) {
  *   getPolynom()      => null
  */
 function getPolynom() {
-    const coeffs = [...arguments]
+  const coeffs = [...arguments]
 
-    if (coeffs.length > 0) {
-        return function(x) {
-            return coeffs.reduce((acc, curr, idx) => acc + curr * x**(coeffs.length - 1 - idx), 0)
-        } 
+  if (coeffs.length > 0) {
+    return function (x) {
+      return coeffs.reduce((acc, curr, idx) => acc + curr * x ** (coeffs.length - 1 - idx), 0)
     }
-    
-    return null
-}
+  }
 
+  return null
+}
 
 /**
  * Memoizes passed function and returns function
@@ -96,13 +92,12 @@ function getPolynom() {
  *   memoizer() => the same random number  (next run, returns the previous cached result)
  */
 function memoize(func) {
-    const cached = func()
+  const cached = func()
 
-    return function() {
-        return cached
-    }
+  return function () {
+    return cached
+  }
 }
-
 
 /**
  * Returns the function trying to call the passed function and if it throws,
@@ -120,21 +115,21 @@ function memoize(func) {
  * retryer() => 2
  */
 function retry(func, attempts) {
-    return function() {
-        for (let i = 0; i <= attempts; ++i) {
-            try {
-                return func()
-            } catch (err) {
-                if (attempts - i) {
-                    continue
-                } else { // all attempts ended
-                    throw err
-                }
-            }
+  return function () {
+    for (let i = 0; i <= attempts; ++i) {
+      try {
+        return func()
+      } catch (err) {
+        if (attempts - i) {
+          continue
+        } else {
+          // all attempts ended
+          throw err
         }
+      }
     }
+  }
 }
-
 
 /**
  * Returns the logging wrapper for the specified method,
@@ -160,17 +155,16 @@ function retry(func, attempts) {
  *
  */
 function logger(func, logFunc) {
-    return function(arg) {
-        const argsString = JSON.stringify(Array.from(arguments)).slice(1, -1)
-        
-        logFunc(`${func.name}(${argsString}) starts`)
-        let res = func(...arguments)
-        logFunc(`${func.name}(${argsString}) ends`)
+  return function (arg) {
+    const argsString = JSON.stringify(Array.from(arguments)).slice(1, -1)
 
-        return res
-    }
+    logFunc(`${func.name}(${argsString}) starts`)
+    let res = func(...arguments)
+    logFunc(`${func.name}(${argsString}) ends`)
+
+    return res
+  }
 }
-
 
 /**
  * Return the function with partial applied arguments
@@ -187,11 +181,10 @@ function logger(func, logFunc) {
  */
 function partialUsingArguments(fn) {
   const closureArgs = [...arguments].slice(1)
-  return function() {
-   return fn(...closureArgs.concat([...arguments])) 
+  return function () {
+    return fn(...closureArgs.concat([...arguments]))
   }
 }
-
 
 /**
  * Returns the id generator function that returns next integer starting from specified number every time when invoking.
@@ -210,19 +203,18 @@ function partialUsingArguments(fn) {
  *   getId10() => 11
  */
 function getIdGeneratorFunction(startFrom) {
-  return function() {
+  return function () {
     return startFrom++
   }
 }
 
-
 module.exports = {
-    getComposition: getComposition,
-    getPowerFunction: getPowerFunction,
-    getPolynom: getPolynom,
-    memoize: memoize,
-    retry: retry,
-    logger: logger,
-    partialUsingArguments: partialUsingArguments,
-    getIdGeneratorFunction: getIdGeneratorFunction,
-};
+  getComposition: getComposition,
+  getPowerFunction: getPowerFunction,
+  getPolynom: getPolynom,
+  memoize: memoize,
+  retry: retry,
+  logger: logger,
+  partialUsingArguments: partialUsingArguments,
+  getIdGeneratorFunction: getIdGeneratorFunction,
+}
